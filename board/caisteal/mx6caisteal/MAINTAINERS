@@ -1,0 +1,7 @@
+MX6CAISTEAL BOARD
+M:      Harkirat S Virk <harkiratsvirk@gmail.com>
+S:      Maintained
+F:      board/caisteal/mx6caisteal/
+F:      include/configs/mx6caisteal.h   # additional file to duplicate
+F:      configs/mx6caisteal_defconfig   # additional file to duplicate
+

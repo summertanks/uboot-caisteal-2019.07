@@ -1,0 +1,13 @@
+if TARGET_MX6CAISTEAL
+
+config SYS_BOARD
+	default "mx6caisteal"
+
+config SYS_VENDOR
+        default "caisteal"
+
+config SYS_CONFIG_NAME
+        default "mx6caisteal"
+
+endif
+
