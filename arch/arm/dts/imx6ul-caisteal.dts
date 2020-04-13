@@ -15,9 +15,6 @@
 	compatible = "fsl,imx6ul-caisteal", "fsl,imx6ul";
 
 	/* TODO: Check */
-	aliases {
-		spi5 = &soft_spi;
-	};
 
 	chosen {
 		stdout-path = &uart1;
@@ -184,5 +181,11 @@
                                 MX6_PAD_NAND_CLE__USDHC1_DATA7          0x17059
                         >;
                 };
+
+	pinctrl_led: ledgrp {
+		fsl,pins = <
+			MX6UL_PAD_GPIO1_IO02__GPIO1_IO02	0x1f020
+		>;
+	};
 };
 
