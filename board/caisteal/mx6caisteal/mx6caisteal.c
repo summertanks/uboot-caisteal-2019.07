@@ -34,6 +34,26 @@ DECLARE_GLOBAL_DATA_PTR;
 //--------------------------------------------------------------
 // Pad Configuration
 
+/* Pad characteristics are:
+	• SRE (1 bit slew rate control)-Slew rate control bit; selects between FAST/
+	  SLOW slew rate output. Fast slew rate is used for high frequency designs.
+	• DSE (2 bits drive strength control)-Drive strength control bits; selects the
+	  drive strength (low, medium, high, or max).
+	• ODE (1 bit open drain control)-Open drain enable bit; selects open drain or
+	  CMOS output.
+	• HYS (1 bit hysteresis control)-Selects between CMOS or Schmitt Trigger
+	  when pad is an input.
+	• PUS (2 bits pull up/down configuration value)-Selects between pull up or
+	  down and its value.
+	• PUE (1 bit pull/keep select)-Selects between pull up or keeper. A keeper
+	  circuit help assure that a pin stays in the last logic state when the pin is no
+	  longer being driven.
+	• PKE (1 bit enable/disable pull up, pull down or keeper capability)-Enable or
+	  disable pull up, pull down, or keeper.
+	• DDR_MODE_SEL (1 bit ddr_mode control)-Needed when interfacing DDR memories.
+	• DDR_INPUT (1 bit ddr_input control)-Needed when interfacing DDR memories
+*/
+
 #define UART_PAD_CTRL  (PAD_CTL_PKE | PAD_CTL_PUE |		\
 	PAD_CTL_PUS_100K_UP | PAD_CTL_SPEED_MED |		\
 	PAD_CTL_DSE_40ohm   | PAD_CTL_SRE_FAST  | PAD_CTL_HYS)

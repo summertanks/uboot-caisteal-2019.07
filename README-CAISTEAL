@@ -78,6 +78,28 @@ Create own repo
     git checkout zeus
 
 ------------------------------------------------------------------------------------------------------------------
+Files Modified
+	F arch/arm/mach-imx/mx6/Kconfig
+	D board/caisteal
+	D board/caisteal/mx6caisteal
+	D board/causteal/common
+	F board/caisteal/mx6caisteal/Kconfig
+	F board/caisteal/mx6caisteal/README
+	F board/caisteal/mx6caisteal/MAINTAINERS
+	F board/caisteal/mx6caisteal/Makefile
+	F board/caisteal/mx6caisteal/mx6caisteal.c
+	F board/caisteal/common/Makefile
+	F board/caisteal/common/pfuze.h
+	F board/caisteal/common/pfuze.c
+	F include/configs/mx6caisteal.h
+	F arch/arm/dts/imx6ul-caisteal.dts
+	F configs/mx6caisteal_defconfig
+Compile
+	# confirm in git directory
+	make distclean
+	make mx6caisteal_config
+ 	make
+------------------------------------------------------------------------------------------------------------------
 
 Create new board
     Searching for files to modify - grep -ri "TARGET_MX6"
@@ -197,33 +219,8 @@ Create new board
     # Modify Makefile
         comment out all except obj-$(CONFIG_DM_PMIC_PFUZE100) += pfuze.o 
 
-Compile
-    # confirm in git directory
-    make distclean
-    make mx6caisteal_config
-    make
-
 DDR3 Calibration 
     (DDR3 Stress tester)
 
 ----------------------------------------------------------------------------------------------------------
-
-Files Modified
-
-arch/arm/mach-imx/mx6/Kconfig
-
-board/caisteal/mx6caisteal/Kconfig
-board/caisteal/mx6caisteal/MAINTAINERS
-board/caisteal/mx6caisteal/Makefile
-board/caisteal/mx6caisteal/mx6caisteal.c
-board/caisteal/mx6caisteal/README
-board/caisteal/common/pfuze.c
-board/caisteal/common/pfuze.h
-board/caisteal/common/Mafefile
-
-include/configs/mx6caisteal.h
-
-arch/arm/dts/imx6ul-caisteal.dts
-
-configs/mx6caisteal_defconfig
 
