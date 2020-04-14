@@ -192,6 +192,11 @@ static iomux_v3_cfg_t const boot_cfg_pads[] = {
 
 };
 
+static iomux_v3_cfg_t const gpio_pads[] = {
+
+	MX6_PAD_GPIO1_IO02__GPIO1_IO02 |  MUX_PAD_CTRL(UNUSED_PULLUP),
+};
+
 //--------------------------------------------------------------------------
 // iomux setup
 
@@ -225,17 +230,23 @@ static void setup_iomux_boot_cfg(void)
         imx_iomux_v3_setup_multiple_pads(boot_cfg_pads, ARRAY_SIZE(boot_cfg_pads));
 }
 
+static void setup_iomux_gpio_cfg(void)
+{
+        imx_iomux_v3_setup_multiple_pads(gpio_pads, ARRAY_SIZE(gpio_pads));
+}
+
 //--------------------------------------------------------------------------
 //
 
-#ifdef CONFIG_DM_PMIC
 int power_init_board(void)
 {
+	/*
         struct udevice *dev;
         int ret, dev_id, rev_id;
         unsigned int reg;
 
-        // TODO: Confirm the PMIC and change Device name
+        
+	// TODO: Confirm the PMIC and change Device name
         ret = pmic_get("pfuze3000", &dev);
         if (ret == -ENODEV)
                 return 0;
@@ -247,23 +258,22 @@ int power_init_board(void)
         printf("PMIC: PFUZE3000 DEV_ID=0x%x REV_ID=0x%x\n", dev_id, rev_id);
 
         // TODO : Confirm Voltage Selection
-        /* disable Low Power Mode during standby mode */
+        // disable Low Power Mode during standby mode 
         reg = pmic_reg_read(dev, PFUZE3000_LDOGCTL);
         reg |= 0x1;
         pmic_reg_write(dev, PFUZE3000_LDOGCTL, reg);
 
-        /* SW1B step ramp up time from 2us to 4us/25mV */
+        // SW1B step ramp up time from 2us to 4us/25mV
         pmic_reg_write(dev, PFUZE3000_SW1BCONF, 0x40);
 
-        /* SW1B mode to APS/PFM */
+        // SW1B mode to APS/PFM
         pmic_reg_write(dev, PFUZE3000_SW1BMODE, 0xc);
 
-        /* SW1B standby voltage set to 0.975V */
+        // SW1B standby voltage set to 0.975V
         pmic_reg_write(dev, PFUZE3000_SW1BSTBY, 0xb);
-
-        return 0;
+	*/
+	return 0;
 }
-#endif
 
 int dram_init(void)
 {
@@ -272,7 +282,6 @@ int dram_init(void)
 }
 
 
-#ifdef CONFIG_FSL_QSPI
 static int board_qspi_init(void)
 {
 	/* Set the clock */
@@ -280,7 +289,6 @@ static int board_qspi_init(void)
 
 	return 0;
 }
-#endif
 
 #define USDHC1_CD_GPIO	IMX_GPIO_NR(1, 19)
 #define USDHC1_PWR_GPIO	IMX_GPIO_NR(1, 9)
@@ -293,17 +301,6 @@ static int board_qspi_init(void)
 
 #define USB_OTHERREGS_OFFSET	0x800
 #define UCTRL_PWR_POL		(1 << 9)
-
-static iomux_v3_cfg_t const usb_otg_pads[] = {
-	MX6_PAD_GPIO1_IO00__ANATOP_OTG1_ID | MUX_PAD_CTRL(OTG_ID_PAD_CTRL),
-};
-
-/* At default the 3v3 enables the MIC2026 for VBUS power */
-static void setup_usb(void)
-{
-	imx_iomux_v3_setup_multiple_pads(usb_otg_pads,
-					 ARRAY_SIZE(usb_otg_pads));
-}
 
 int board_usb_phy_mode(int port)
 {
@@ -339,6 +336,7 @@ int board_early_init_f(void)
 	setup_iomux_qspi();
 	setup_iomux_usdhc();
 	setup_iomux_i2c();
+	setup_iomux_gpio_cfg();
 	return 0;
 }
 
@@ -347,18 +345,9 @@ int board_init(void)
 	/* Address of boot parameters */
 	gd->bd->bi_boot_params = PHYS_SDRAM + 0x100;
 
-
-#ifdef CONFIG_USB_EHCI_MX6
-#ifndef CONFIG_DM_USB
-	setup_usb();
-#endif
-#endif
-
 #ifdef CONFIG_FSL_QSPI
 	board_qspi_init();
 #endif
-
-
 	return 0;
 }
 
@@ -380,7 +369,7 @@ int board_late_init(void)
 
 #ifdef CONFIG_ENV_VARS_UBOOT_RUNTIME_CONFIG
 	env_set("board_name", "CAISTEAL");
-	env_set("board_rev", "14X14");
+	env_set("board_rev", "MKIII");
 #endif
 
 	return 0;
@@ -406,68 +395,9 @@ static struct mx6ul_iomux_grp_regs mx6_grp_ioregs = {
 	.grp_b1ds = 0x00000030,
 	.grp_ddrpke = 0x00000000,
 	.grp_ddrmode = 0x00020000,
-#ifdef CONFIG_TARGET_MX6UL_9X9_EVK
-	.grp_ddr_type = 0x00080000,
-#else
 	.grp_ddr_type = 0x000c0000,
-#endif
 };
 
-#ifdef CONFIG_TARGET_MX6UL_9X9_EVK
-static struct mx6ul_iomux_ddr_regs mx6_ddr_ioregs = {
-	.dram_dqm0 = 0x00000030,
-	.dram_dqm1 = 0x00000030,
-	.dram_ras = 0x00000030,
-	.dram_cas = 0x00000030,
-	.dram_odt0 = 0x00000000,
-	.dram_odt1 = 0x00000000,
-	.dram_sdba2 = 0x00000000,
-	.dram_sdclk_0 = 0x00000030,
-	.dram_sdqs0 = 0x00003030,
-	.dram_sdqs1 = 0x00003030,
-	.dram_reset = 0x00000030,
-};
-
-static struct mx6_mmdc_calibration mx6_mmcd_calib = {
-	.p0_mpwldectrl0 = 0x00000000,
-	.p0_mpdgctrl0 = 0x20000000,
-	.p0_mprddlctl = 0x4040484f,
-	.p0_mpwrdlctl = 0x40405247,
-	.mpzqlp2ctl = 0x1b4700c7,
-};
-
-static struct mx6_lpddr2_cfg mem_ddr = {
-	.mem_speed = 800,
-	.density = 2,
-	.width = 16,
-	.banks = 4,
-	.rowaddr = 14,
-	.coladdr = 10,
-	.trcd_lp = 1500,
-	.trppb_lp = 1500,
-	.trpab_lp = 2000,
-	.trasmin = 4250,
-};
-
-struct mx6_ddr_sysinfo ddr_sysinfo = {
-	.dsize = 0,
-	.cs_density = 18,
-	.ncs = 1,
-	.cs1_mirror = 0,
-	.walat = 0,
-	.ralat = 5,
-	.mif3_mode = 3,
-	.bi_on = 1,
-	.rtt_wr = 0,        /* LPDDR2 does not need rtt_wr rtt_nom */
-	.rtt_nom = 0,
-	.sde_to_rst = 0,    /* LPDDR2 does not need this field */
-	.rst_to_cke = 0x10, /* JEDEC value for LPDDR2: 200us */
-	.ddr_type = DDR_TYPE_LPDDR2,
-	.refsel = 0,	/* Refresh cycles at 64KHz */
-	.refr = 3,	/* 4 refresh commands per refresh cycle */
-};
-
-#else
 static struct mx6ul_iomux_ddr_regs mx6_ddr_ioregs = {
 	.dram_dqm0 = 0x00000030,
 	.dram_dqm1 = 0x00000030,
@@ -519,7 +449,6 @@ static struct mx6_ddr3_cfg mem_ddr = {
 	.trcmin = 4875,
 	.trasmin = 3500,
 };
-#endif
 
 static void ccgr_init(void)
 {

@@ -94,6 +94,7 @@ Files Modified
 	F include/configs/mx6caisteal.h
 	F arch/arm/dts/imx6ul-caisteal.dts
 	F arch/arm/dts/Makefile
+	F arch/arm/mach-imx/mx6/Kconfig
 	F configs/mx6caisteal_defconfig
 Compile
 	# confirm in git directory
