@@ -16,41 +16,27 @@ Modfied
 #include "mx6_common.h"
 #include <asm/mach-imx/gpio.h>
 
-//#define is_mx6ul_9x9_evk()	CONFIG_IS_ENABLED(TARGET_MX6UL_9X9_EVK)
-
 /* SPL options */
 #include "imx6_spl.h"
 
 /* Size of malloc() pool */
 #define CONFIG_SYS_MALLOC_LEN		(16 * SZ_1M)
 
+/* UART */
 #define CONFIG_MXC_UART
 #define CONFIG_MXC_UART_BASE		UART1_BASE
-// TODO: Figure where this goes -  define CONFIG_CONSOLE_DEV		"ttymxc0"
 
 /* MMC Configs */
 #ifdef CONFIG_FSL_USDHC
-#define CONFIG_SYS_FSL_ESDHC_ADDR	USDHC2_BASE_ADDR
-
-/* NAND pin conflicts with usdhc2 */
-#ifdef CONFIG_NAND_MXS
+#define CONFIG_SYS_FSL_ESDHC_ADDR	USDHC1_BASE_ADDR
 #define CONFIG_SYS_FSL_USDHC_NUM	1
-#else
-#define CONFIG_SYS_FSL_USDHC_NUM	2
-#endif
-
 #endif
 
 /* I2C configs */
 #ifdef CONFIG_CMD_I2C
 #define CONFIG_SYS_I2C_MXC
 #define CONFIG_SYS_I2C_MXC_I2C1		/* enable I2C bus 1 */
-// #define CONFIG_SYS_I2C_MXC_I2C2		/* enable I2C bus 2 */
 #define CONFIG_SYS_I2C_SPEED		100000
-#endif
-
-#ifdef CONFIG_DM_GPIO
-#define CONFIG_DM_74X164
 #endif
 
 #define CONFIG_SYS_MMC_IMG_LOAD_PART	1
