@@ -101,6 +101,7 @@ Compile
 	make distclean
 	make mx6caisteal_config
  	make
+
 ------------------------------------------------------------------------------------------------------------------
 
 Create new board
