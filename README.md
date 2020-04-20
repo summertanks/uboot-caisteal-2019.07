@@ -54,36 +54,52 @@ Modify .gitignore to add /.pc/* after the last line
 
 Done from within the working directory (make sure the environment variables are set)
 ```
-        make distclean
-        make mx6caisteal_config
-        make
+    make distclean
+    make mx6caisteal_config
+    make
 ```
 
 ------------------------------------------------------------------------------------------------------------------
 
 ## Internals
 
-Files Modified
+### Files Modified
 ```
-	F arch/arm/mach-imx/mx6/Kconfig
-	D board/caisteal
-	D board/caisteal/mx6caisteal
-	D board/causteal/common
-	F board/caisteal/mx6caisteal/Kconfig
-	F board/caisteal/mx6caisteal/README
-	F board/caisteal/mx6caisteal/MAINTAINERS
-	F board/caisteal/mx6caisteal/Makefile
-	F board/caisteal/mx6caisteal/mx6caisteal.c
-	F board/caisteal/common/Makefile
-	F board/caisteal/common/pfuze.h
-	F board/caisteal/common/pfuze.c
-	F include/configs/mx6caisteal.h
-	F arch/arm/dts/imx6ul-caisteal.dts
-	F arch/arm/dts/Makefile
-	F arch/arm/mach-imx/mx6/Kconfig
-	F configs/mx6caisteal_defconfig
+    F arch/arm/mach-imx/mx6/Kconfig
+    D board/caisteal
+    D board/caisteal/mx6caisteal
+    D board/causteal/common
+    F board/caisteal/mx6caisteal/Kconfig
+    F board/caisteal/mx6caisteal/README
+    F board/caisteal/mx6caisteal/MAINTAINERS
+    F board/caisteal/mx6caisteal/Makefile
+    F board/caisteal/mx6caisteal/mx6caisteal.c
+    F board/caisteal/common/Makefile
+    F board/caisteal/common/pfuze.h
+    F board/caisteal/common/pfuze.c
+    F include/configs/mx6caisteal.h
+    F arch/arm/dts/imx6ul-caisteal.dts
+    F arch/arm/dts/Makefile
+    F arch/arm/mach-imx/mx6/Kconfig
+    F configs/mx6caisteal_defconfig
 ```
-------------------------------------------------------------------------------------------------------------------
+
+
+### Modified Sections
+
+arch/arm/mach-imx/mx6/Kconfig
+```
+    config TARGET_MX6CAISTEAL
+      	bool "mx6caisteal"
+        select BOARD_LATE_INIT
+        select DM
+        select DM_THERMAL
+        select MX6UL
+        select SUPPORT_SPL
+	imply CMD_DM
+
+        source "board/caisteal/mx6caisteal/Kconfig"
+```
 
 Create new board
     Searching for files to modify - grep -ri "TARGET_MX6"
