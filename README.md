@@ -1,14 +1,16 @@
 # uboot with Caisteal imx6ul support 
 
-### Prerequisites
+## Getting Started
 
-The following packages are generically requirted for development work on u-boot.
-It is strongly advised to check README-uboot for greater details
+### Prerequisites
+The following packages are generically required for development work on u-boot.
+It is strongly advised to check [uboot](https://github.com/u-boot/u-boot) repository for greater details
 ```
 gawk wget git-core diffstat unzip build-essential chrpath libsdl1.2-dev xterm curl
 texinfo lzop nfs-kernel-server gcc-arm-linux-gnueabihf bison flex
 ```
 
+### Environment Variables
 Set the following Environment Variables
 ```
 export CROSS_COMPILE=arm-linux-gnueabihf-
@@ -16,60 +18,43 @@ export ARCH=arm
 ```
 
 -----------------------------------------------------------------------------------------------------------------
-Preparation of Host Machine
-    sudo apt-get update
-    sudo apt-get upgrade
-    sudo apt-get dist-upgrade
-    sudo apt-get install gawk wget git-core diffstat unzip build-essential chrpath libsdl1.2-dev xterm curl
-    sudo apt-get install texinfo
-    sudo apt-get install lzop
-    sudo apt-get install nfs-kernel-server
-    sudo apt-get install gcc-arm-linux-gnueabihf
-    sudo apt-get install repo
-    export CROSS_COMPILE=arm-linux-gnueabihf-
-    export ARCH=arm
-    sudo apt-get install bison flex
-    sudo apt-get install xinetd tftpd tftp
-    
-    Modify /etc/xinetd.d/tftp
-        service tftp
-        {
-            protocol        = udp
-            port            = 69
-            socket_type     = dgram
-            wait            = yes
-            user            = nobody
-            server          = /usr/sbin/in.tftpd
-            server_args     = /tftp    
-            disable         = no
-        }
-    sudo mkdir /tftp
-    sudo chmod -R 777 /tftp
-    sudo chown -R nobody /tftp
-    mkdir /tftp/imx6
-    sudo /etc/init.d/xinetd restart
-    sudo reboot
 
----------------------------------------------------------------------------------------------------------------
-Cloning Sourcecode
-    # Activities from home dir select accordingly
-    cd  
-    mkdir CaistealOS-MKII
-    cd CaistealOS-MKII
-    git config --global user.email "summertanks@gmail.com"
-    git config --global user.name "Harkirat S Virk"
+## Cloning and Building Code
 
-    # latest being zeus - may change accordingly
-    repo init -u https://github.com/Freescale/fsl-community-bsp-platform -b zeus
-    repo sync
-    MACHINE=imx6ulevk DISTRO=poky source setup-environment build
-    
-    # using multiple threads for compilation after the last line  
-    Modify build/conf/bblayers.conf to add BB_NUMBER_THREADS = "8"
+### Cloning Sourcecode
 
-    cd build 
-    bitbake core-image-minimal
+Activities are from home directory, select accordingly
+    cd <working dir>
+    git clone https://github.com/summertanks/uboot-caisteal-2019.07.git
 
+### Creating own repo
+Incase you need to modify repo of own design
+```
+    cd uboot-caisteal-2019.07
+    rm -rf .git
+    git init
+    git config --global user.email "name@example.com"
+    git config --global user.name "name"
+    git add .
+```
+
+Modify .gitignore to add /.pc/* after the last line
+```
+    git commit -m "Initial Version"
+    git remote add origin https://github.com/<username>/<repo>.git
+    git push -u origin master
+    git branch zeus
+    git push origin zeus
+    git checkout zeus
+```
+
+### Build
+Done from within the working directory
+```
+        make distclean
+        make mx6caisteal_config
+        make
+```
 --------------------------------------------------------------------------------------------------------------
 Create own repo
     # remove original .git - the exact folder names may change
