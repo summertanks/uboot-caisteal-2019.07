@@ -24,8 +24,10 @@ export ARCH=arm
 ### Cloning Sourcecode
 
 Activities are from home directory, select accordingly
+```    
     cd <working dir>
     git clone https://github.com/summertanks/uboot-caisteal-2019.07.git
+```
 
 ### Creating own repo
 Incase you need to modify repo of own design
@@ -49,36 +51,20 @@ Modify .gitignore to add /.pc/* after the last line
 ```
 
 ### Build
-Done from within the working directory
+
+Done from within the working directory (make sure the environment variables are set)
 ```
         make distclean
         make mx6caisteal_config
         make
 ```
---------------------------------------------------------------------------------------------------------------
-Create own repo
-    # remove original .git - the exact folder names may change
-    cd ~/CaistealOS-MKII/build/tmp/work/imx6ulevk-poky-linux-gnueabi/u-boot-fslc/v2019.07+gitAUTOINC+ca0ab15271-r0/git 
-    rm -rf .git
-    
-    Modify .gitignore to add /.pc/* after the last line
-
-    # creating new repo
-    git init 
-    git add .
-    git commit -m "Initial Vesion"
-    
-    # change the git name as required
-    git remote add origin https://github.com/summertanks/CaistealMKII-uboot.git
-    git push -u origin master
-
-    # change branch to Zeus, maintain master as it is
-    git branch zeus
-    git push origin zeus
-    git checkout zeus
 
 ------------------------------------------------------------------------------------------------------------------
+
+## Internals
+
 Files Modified
+```
 	F arch/arm/mach-imx/mx6/Kconfig
 	D board/caisteal
 	D board/caisteal/mx6caisteal
@@ -96,12 +82,7 @@ Files Modified
 	F arch/arm/dts/Makefile
 	F arch/arm/mach-imx/mx6/Kconfig
 	F configs/mx6caisteal_defconfig
-Compile
-	# confirm in git directory
-	make distclean
-	make mx6caisteal_config
- 	make
-
+```
 ------------------------------------------------------------------------------------------------------------------
 
 Create new board
