@@ -101,67 +101,36 @@ arch/arm/mach-imx/mx6/Kconfig
         source "board/caisteal/mx6caisteal/Kconfig"
 ```
 
-Create new board
-    Searching for files to modify - grep -ri "TARGET_MX6"
+board/caisteal/mx6caisteal/Kconfig
+```
+    if TARGET_MX6CAISTEAL
+	config SYS_BOARD
+	    default "mx6caisteal"
 
-    # Modify arch/arm/mach-imx/mx6/Kconfig and add a section and nake of Kconfig
-	config TARGET_MX6CAISTEAL
-        	bool "mx6caisteal"
-        	select BOARD_LATE_INIT
-        	select DM
-        	select DM_THERMAL
-        	select MX6UL
-       		select SUPPORT_SPL
-        	imply CMD_DM
+	config SYS_VENDOR
+	    default "caisteal"
 
-    	source "board/caisteal/mx6caisteal/Kconfig"
+	config SYS_CONFIG_NAME
+	    default "mx6caisteal"
+    endif
+```
 
-    # Creating the file will require to create the directories too
-    	mkdir board/caisteal
-    	mkdir board/caisteal/mx6caisteal
-    	cp board/freescale/mx6ul_14x14_evk/Kconfig board/caisteal/mx6caisteal/Kconfig
+board/caisteal/mx6caisteal/MAINTAINERS
+```
+    MX6CAISTEAL BOARD
+    M:      Harkirat S Virk <harkiratsvirk@gmail.com>
+    S:      Maintained
+    F:      board/caisteal/mx6caisteal/
+    F:      include/configs/mx6caisteal.h
+    F:      configs/mx6caisteal_defconfig
+```
+   
+board/caisteal/mx6caisteal/Makefile
+```
+    obj-y  := mx6caisteal.o
+```
     
-    # Modify kconfig file with only the following content
-    	if TARGET_MX6CAISTEAL
-
-    	config SYS_BOARD
-        	default "mx6caisteal"
-
-    	config SYS_VENDOR
-        	default "caisteal"
-
-    	config SYS_CONFIG_NAME
-        	default "mx6caisteal"
-
-    	endif
-
-    current files in board/freescale/mx6sabresd/ that we should be replicated
-    -rw-r--r--  1 summertanks summertanks   154 Jul 12 21:44 Kconfig
-    -rw-r--r--  1 summertanks summertanks   167 Jul 12 21:44 MAINTAINERS
-    -rw-r--r--  1 summertanks summertanks   172 Jul 12 21:44 Makefile
-    -rw-r--r--  1 summertanks summertanks 28679 Jul 12 21:44 mx6sabresd.c
-    -rw-r--r--  1 summertanks summertanks  2512 Jul 12 21:44 README
-
-    # Kconfig is already done
-
-    # MAINTAINERS
-    	cp board/freescale/mx6sabresd/MAINTAINERS board/caisteal/mx6caisteal/
-    
-    # Modify MAINTAINERS 
-        MX6CAISTEAL BOARD
-        M:      Harkirat S Virk <harkiratsvirk@gmail.com>
-        S:      Maintained
-        F:      board/caisteal/mx6caisteal/
-        F:      include/configs/mx6caisteal.h   # additional file to duplicate
-        F:      configs/mx6caisteal_defconfig   # additional file to duplicate
-
-    # Makefile
-    	cp board/freescale/mx6ul_14x14_evk/Makefile board/caisteal/mx6caisteal/
-
-    # Modify file
-        obj-y  := mx6caisteal.o
-
-    # mx6caisteal.h
+# mx6caisteal.h
     	cp include/configs/mx6ul_14x14_evk.h include/configs/mx6caisteal.h
     # Modify lines    
         #ifndef __MX6CAISTEAL_CONFIG_H
