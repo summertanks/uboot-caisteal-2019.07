@@ -14,12 +14,11 @@
 	model = "Caisteal i.MX6UL";
 	compatible = "fsl,imx6ul-caisteal", "fsl,imx6ul";
 
-	/* TODO: Check */
-
 	chosen {
 		stdout-path = &uart1;
 	};
 
+	/* Start Address: 0x80000000 Size 4096 MB */
 	memory {
 		reg = <0x80000000 0x20000000>;
 	};
@@ -31,7 +30,7 @@
 
 		led-red {
 			label = "LED_RED";
-			gpios = <&gpio4 21 GPIO_ACTIVE_LOW>; /* Check PIN */
+			gpios = <&gpio1 02 GPIO_ACTIVE_LOW>; /* TODO: Check PIN */
 			default-state = "off";
 		};
 	};
@@ -46,7 +45,7 @@
 			regulator-name = "VSD_3V3";
 			regulator-min-microvolt = <3300000>;
 			regulator-max-microvolt = <3300000>;
-			gpio = <&gpio1 9 GPIO_ACTIVE_HIGH>;
+			gpio = <&gpio1 9 GPIO_ACTIVE_HIGH>; /* TODO: Check PIN */
 			off-on-delay = <20000>;
 			enable-active-high;
 		};
