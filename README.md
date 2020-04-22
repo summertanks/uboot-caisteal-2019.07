@@ -87,6 +87,19 @@ Done from within the working directory (make sure the environment variables are 
 
 ### Modified Sections
 
+arch/arm/dts/Makefile
+```
+dtb-$(CONFIG_MX6UL) += \
+        imx6ul-caisteal.dtb
+```
+
+arch/arm/dts/imx6ull-usbarmory.dts
+(the important aspects only)
+```
+compatible = "fsl,imx6ul-caisteal", "fsl,imx6ul";
+
+```
+
 arch/arm/mach-imx/mx6/Kconfig
 ```
     config TARGET_MX6CAISTEAL
@@ -129,15 +142,22 @@ board/caisteal/mx6caisteal/Makefile
 ```
     obj-y  := mx6caisteal.o
 ```
-    
-# mx6caisteal.h
-    	cp include/configs/mx6ul_14x14_evk.h include/configs/mx6caisteal.h
-    # Modify lines    
-        #ifndef __MX6CAISTEAL_CONFIG_H
-        #define __MX6CAISTEAL_CONFIG_H
 
-    # TODO: Check if this is still required
-	#define is_mx6ul_9x9_evk()      CONFIG_IS_ENABLED(TARGET_MX6UL_9X9_EVK)
+include/configs/mx6caisteal.h
+```
+#ifndef __MX6CAISTEAL_CONFIG_H
+#define __MX6CAISTEAL_CONFIG_H
+```    
+
+configs/mx6caisteal_defconfig
+```
+CONFIG_DEFAULT_DEVICE_TREE="imx6ul-caisteal"
+CONFIG_TARGET_MX6CAISTEAL=y
+```
+
+board/caisteal/mx6caisteal/mx6caisteal.c
+
+
     
     # Modify
                 "findfdt="\
@@ -148,19 +168,6 @@ board/caisteal/mx6caisteal/Makefile
                                         "echo WARNING: Could not determine dtb to use; fi; " \
                         "fi;\0" \
 
-    #   imx6ul-caisteal.dts
-	cp arch/arm/dts/imx6ul-14x14-evk.dts arch/arm/dts/imx6ul-caisteal.dts
-
-    # Modify
-        model = "Caisteal i.MX6 UltraLite 14x14";
-        compatible = "fsl,imx6ul-14x14-evk", "fsl,imx6ul";
-
-    #   mx6caisteal_defconfig
-	cp configs/mx6ul_14x14_evk_defconfig configs/mx6caisteal_defconfig
-
-    # Modify Lines
-        CONFIG_TARGET_MX6CAISTEAL=y
-        CONFIG_DEFAULT_DEVICE_TREE="imx6ul-14x14-evk"   # TODO : not changed yet
 
 
     # mx6caisteal.c
